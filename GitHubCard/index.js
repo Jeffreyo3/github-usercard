@@ -3,6 +3,9 @@
            https://api.github.com/users/<your name>
 */
 
+// axios.get('https://api.github.com/users/jeffreyo3');
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -13,6 +16,20 @@
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
+
+const userCards = document.querySelector('.cards');
+
+axios.get('https://api.github.com/users/jeffreyo3')
+  .then((results) => {
+    cardCreator(results);
+    console.log(results);  
+    // results.user.forEach(url => {
+      const newCard = cardCreator(results);
+      userCards.appendChild(newCard);
+  })
+  .catch( err => {
+    console.log("Error:", err);
+  });
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -43,8 +60,60 @@ const followersArray = [];
     <p>Bio: {users bio}</p>
   </div>
 </div>
-
 */
+
+function cardCreator(user) {
+  // Create Elements
+  const card = document.createElement('div');
+    const cardUserImg = document.createElement('img');
+    const cardInfo = document.createElement('div');
+      const infoName = document.createElement('h3');
+      const infoUserName = document.createElement('p');
+      const infoLoc = document.createElement('p');
+      const infoProfile = document.createElement('p');
+        const profAddress = document.createElement('a');
+      const infoFollowers = document.createElement('p');
+      const infoFollowing = document.createElement('p');
+      const infoBio = document.createElement('p');
+      
+  // Create Structure
+  card.appendChild(cardUserImg);
+  card.appendChild(cardInfo);
+    cardInfo.appendChild(infoName);
+    cardInfo.appendChild(infoUserName);
+    cardInfo.appendChild(infoLoc);
+    cardInfo.appendChild(infoProfile);
+      infoProfile.appendChild(profAddress);
+    cardInfo.appendChild(infoFollowers);
+    cardInfo.appendChild(infoFollowing);
+    cardInfo.appendChild(infoBio);
+
+  // Set Content
+  cardUserImg.src = user.data.avatar_url;
+  infoName.textContent = user.data.name;
+  infoUserName.textContent = user.data.login;
+  infoLoc.textContent = user.data.location;
+  infoProfile.textContent = 'GitHub Link';
+  profAddress.href = user.data.html_url;
+  infoFollowers.textContent = user.data.followers;
+  infoFollowing.textContent = user.data.following;
+  infoBio.textContent = user.data.bio;
+
+  // Apply Styles
+  card.classList.add('card');
+  cardUserImg.classList.add('img');
+  infoName.classList.add('name');
+  infoUserName.classList.add('username');
+  infoLoc.classList.add('p');
+  infoProfile.classList.add('p');
+  infoFollowers.classList.add('p');
+  infoFollowing.classList.add('p');
+  infoBio.classList.add('p');
+
+  return card;
+}
+
+
 
 /* List of LS Instructors Github username's: 
   tetondan
