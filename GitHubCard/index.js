@@ -3,7 +3,7 @@
            https://api.github.com/users/<your name>
 */
 
-axios.get('https://api.github.com/users/jeffreyo3');
+// axios.get('https://api.github.com/users/jeffreyo3');
 
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
@@ -16,16 +16,20 @@ axios.get('https://api.github.com/users/jeffreyo3');
 /* Step 4: Pass the data received from Github into your function, 
            create a new component and add it to the DOM as a child of .cards
 */
+
+const userCards = document.querySelector('.cards');
+
 axios.get('https://api.github.com/users/jeffreyo3')
   .then((results) => {
+    cardCreator(results);
     console.log(results);  
-    results.user.forEach(url => {
-      // create a new dog card
-      const newCard = cardCreator(url);
+    // results.user.forEach(url => {
+      const newCard = cardCreator(results);
       userCards.appendChild(newCard);
-    });
+  })
+  .catch( err => {
+    console.log("Error:", err);
   });
-
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -85,15 +89,15 @@ function cardCreator(user) {
     cardInfo.appendChild(infoBio);
 
   // Set Content
-  cardUserImg.src = user.avatar_url;
-  infoName.textContent = user.name;
-  infoUserName.textContent = user.login;
-  infoLoc.textContent = user.location;
+  cardUserImg.src = user.data.avatar_url;
+  infoName.textContent = user.data.name;
+  infoUserName.textContent = user.data.login;
+  infoLoc.textContent = user.data.location;
   infoProfile.textContent = 'GitHub Link';
-  profAddress.href = user.html_url;
-  infoFollowers.textContent = user.followers;
-  infoFollowing.textContent = user.following;
-  infoBio.textContent = user.bio;
+  profAddress.href = user.data.html_url;
+  infoFollowers.textContent = user.data.followers;
+  infoFollowing.textContent = user.data.following;
+  infoBio.textContent = user.data.bio;
 
   // Apply Styles
   card.classList.add('card');
@@ -109,7 +113,6 @@ function cardCreator(user) {
   return card;
 }
 
-const userCards = document.querySelector('.cards');
 
 
 /* List of LS Instructors Github username's: 
