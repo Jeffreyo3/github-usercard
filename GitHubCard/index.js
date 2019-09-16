@@ -23,13 +23,14 @@ axios.get('https://api.github.com/users/jeffreyo3')
   .then((results) => {
     cardCreator(results);
     console.log(results);  
-    // results.user.forEach(url => {
-      const newCard = cardCreator(results);
-      userCards.appendChild(newCard);
+
+    const newCard = cardCreator(results);
+    userCards.appendChild(newCard);
   })
   .catch( err => {
     console.log("Error:", err);
   });
+
 
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
@@ -41,7 +42,28 @@ axios.get('https://api.github.com/users/jeffreyo3')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = ['tetondan',
+  'shadowborn',
+  'droneal11015',
+  'justsml',
+  'luishrd',
+  'bigknell'];
+
+  followersArray.forEach((user) => {
+    const url = 'https://api.github.com/users/' + user;
+    
+    axios.get(url)
+      .then((results) => {
+        cardCreator(results);
+        console.log(results); 
+
+        const newCard = cardCreator(results);
+        userCards.appendChild(newCard);
+      }) .catch((err) => {
+        console.log("Error:", err);
+      })
+  });
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
